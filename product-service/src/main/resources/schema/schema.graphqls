@@ -1,0 +1,22 @@
+type Mutation {
+    addProduct (productDTO : ProductDTO) : Product,
+    update (productDTO : ProductDTO, id : String) : Product,
+    delete (id : String) :String
+}
+type Query{
+    productById (id : String) : Product,
+    all : [Product]
+}
+type Product{
+    id : String
+    name : String
+    category : String
+    price : String
+    quantity : Int
+}
+input ProductDTO{
+    name : String
+    category : String
+    price : Float
+    quantity : Int
+}
