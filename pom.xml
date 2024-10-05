@@ -19,6 +19,7 @@
         <module>Discovery-server</module>
         <module>Gateway-service</module>
         <module>product-service</module>
+        <module>order-service</module>
     </modules>
 
     <properties>
