@@ -17,4 +17,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 server:
   port: 0
+keycloak:
+  server-url: http://localhost:8081
+  realm: FirstRealm
+  client-id: FirstAppWithKeyCloak
+  adminClientId: admin-cli
+  client-secret: UlCQlDCa5sj4XIABaKt43vHYEMrrurmP
 
