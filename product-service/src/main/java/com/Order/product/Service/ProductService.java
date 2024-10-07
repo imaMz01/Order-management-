@@ -13,4 +13,5 @@ public interface ProductService {
     Product productById(String id);
     String delete(String id);
     boolean checkQuantity(List<OrderLineDto> orderLineDtoList);
+    void decreaseStock(List<OrderLineDto> orderLineDtoList);
 }

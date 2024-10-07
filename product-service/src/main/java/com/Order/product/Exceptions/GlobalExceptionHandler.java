@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFound(ProductNotFoundException ex) {
+    public ResponseEntity<String> handleProductNotFound(ProductNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(ProductCreationException.class)
-    public ResponseEntity<String> handleUserCreationException(ProductCreationException ex) {
+    public ResponseEntity<String> handleProductCreationException(ProductCreationException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

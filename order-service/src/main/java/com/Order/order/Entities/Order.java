@@ -1,13 +1,7 @@
 package com.Order.order.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
@@ -17,11 +11,12 @@ import java.util.List;
 @Getter
 @Table(name = "orders")
 @Entity
+@ToString
 public class Order {
 
     @Id
     private String idOrder;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderLine> ordersLine;
     private String idUser;
 

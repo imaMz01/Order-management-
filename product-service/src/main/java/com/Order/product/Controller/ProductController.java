@@ -43,9 +43,6 @@ public class ProductController {
         return productService.delete(id);
     }
 
-    @DgsQuery
-    public boolean checkQuantity(@InputArgument List<OrderLineDto> orderLineDtoList){
-        return productService.checkQuantity(orderLineDtoList);
-    }
+
 
 }

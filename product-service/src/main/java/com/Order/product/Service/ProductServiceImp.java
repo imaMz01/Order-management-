@@ -69,4 +69,14 @@ public class ProductServiceImp implements ProductService{
                 );
 
     }
+
+    @Override
+    public void decreaseStock(List<OrderLineDto> orderLineDtoList) {
+        orderLineDtoList.forEach( orderLine ->{
+           Product product = helper(orderLine.getIdProduct());
+           product.setQuantity(product.getQuantity() - orderLine.getQuantity());
+           productRepository.save(product);
+                }
+        );
+    }
 }
