@@ -1,20 +1,20 @@
-package com.Order.order.Dtos;
+package com.Order.product.Dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class OrderDto {
+public class OrderLineDto{
+
+    private String idOrderLine;
+    private String idProduct;
+    private int quantity;
 
     private String idOrder;
-    private List<OrderLineDto> ordersLineDto;
-    private UserDto userDto;
 
 }

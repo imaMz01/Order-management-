@@ -1,14 +1,14 @@
 package com.Order.product.Controller;
 
+import com.Order.product.Dtos.OrderLineDto;
 import com.Order.product.Entity.Product;
 import com.Order.product.Service.ProductService;
 import com.Order.product.codegen.types.ProductDTO;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.graphql.dgs.InputArgument;
 import lombok.RequiredArgsConstructor;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ public class ProductController {
     private final ProductService productService;
 
     @DgsMutation
-    public Product addProduct(@RequestBody ProductDTO productDTO){
+    public Product addProduct(@InputArgument  ProductDTO productDTO){
         return productService.add(productDTO);
     }
 
     @DgsQuery
-    public Product productById(@PathVariable String id){
+    public Product productById(@InputArgument String id){
         return productService.productById(id);
     }
 
@@ -34,13 +34,18 @@ public class ProductController {
     }
 
     @DgsMutation
-    public Product update(@Argument ProductDTO productDTO,@Argument String id){
+    public Product update(@InputArgument ProductDTO productDTO,@InputArgument String id){
         return productService.update(productDTO,id);
     }
 
     @DgsMutation
-    public String delete(@Argument String id){
+    public String delete(@InputArgument String id){
         return productService.delete(id);
+    }
+
+    @DgsQuery
+    public boolean checkQuantity(@InputArgument List<OrderLineDto> orderLineDtoList){
+        return productService.checkQuantity(orderLineDtoList);
     }
 
 }

@@ -1,13 +1,11 @@
-package com.Order.User.Dtos;
+package com.Order.order.Dtos;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class UserResponse {
+@Getter
+public class UserDto {
 
     private String id;
     private String userName;

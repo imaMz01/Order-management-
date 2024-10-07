@@ -25,13 +25,13 @@ spring:
         uri: lb://user-service
         predicates[0]: Path=/User/**
       routes[1]:
-        id: product-service
-        uri: lb://product-service
-        predicates[0]: Path=/**
-      routes[3]:
         id: order-service
         uri: lb://order-service
         predicates[0]: Path=/Order/**
+      routes[2]:
+        id: product-service
+        uri: lb://product-service
+        predicates[0]: Path=/**
 ##Inventory service route
 
 # Actuator route

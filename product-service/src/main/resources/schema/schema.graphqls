@@ -5,7 +5,8 @@ type Mutation {
 }
 type Query{
     productById (id : String) : Product,
-    all : [Product]
+    all : [Product],
+    checkQuantity(orderLineDtoList : [OrderLineDto]) : Boolean
 }
 type Product{
     id : String
@@ -19,4 +20,11 @@ input ProductDTO{
     category : String
     price : Float
     quantity : Int
+}
+
+input OrderLineDto{
+    idOrderLine : String
+    idProduct : String
+    quantity : Int
+    idOrder : String
 }

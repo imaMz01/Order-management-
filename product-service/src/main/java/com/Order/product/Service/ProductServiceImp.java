@@ -1,5 +1,6 @@
 package com.Order.product.Service;
 
+import com.Order.product.Dtos.OrderLineDto;
 import com.Order.product.Entity.Product;
 import com.Order.product.Exceptions.ProductNotFoundException;
 import com.Order.product.Mapper.ProductMapper;
@@ -56,5 +57,16 @@ public class ProductServiceImp implements ProductService{
     public String delete(String id) {
         productRepository.delete(helper(id));
         return "Product was deleted successfully";
+    }
+
+    @Override
+    public boolean checkQuantity(List<OrderLineDto> orderLineDtoList) {
+
+        return orderLineDtoList.stream()
+                .allMatch(
+                        orderLine ->
+                                orderLine.getQuantity() <= helper(orderLine.getIdProduct()).getQuantity()
+                );
+
     }
 }
