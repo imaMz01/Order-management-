@@ -3,6 +3,7 @@ package com.Order.order.Services;
 import com.Order.order.Dtos.OrderDto;
 import com.Order.order.Dtos.UserDto;
 import com.Order.order.Entities.Order;
+import com.Order.order.Exceptions.OrderNotFound;
 import com.Order.order.Exceptions.ProductOutOfStockException;
 import com.Order.order.FeignClient.ProductFeign;
 import com.Order.order.FeignClient.UserFeign;
@@ -51,9 +52,20 @@ public class OrderServiceImp implements OrderService{
         return null;
     }
 
+    public Order helper(String id){
+        return orderRepository.findById(id).orElseThrow(
+                () -> new OrderNotFound(id)
+        );
+    }
     @Override
     public OrderDto orderById(String id) {
-        return null;
+        return getOrderDto(id);
+    }
+
+    private OrderDto getOrderDto(String id) {
+        OrderDto orderDto = orderMapper.OrderToOrderDto(helper(id));
+        orderDto.setUserDto(userFeign.userById(helper(id).getIdUser()).getBody());
+        return orderDto;
     }
 
     @Override
@@ -61,10 +73,7 @@ public class OrderServiceImp implements OrderService{
         return orderRepository.findAll().stream()
                 .map(
                         order -> {
-                            OrderDto orderDto = orderMapper.OrderToOrderDto(order);
-                            UserDto userDto = userFeign.userById(order.getIdUser()).getBody();
-                            orderDto.setUserDto(userDto);
-                            return orderDto;
+                            return getOrderDto(order.getIdOrder());
                         })
         .collect(Collectors.toList());
     }

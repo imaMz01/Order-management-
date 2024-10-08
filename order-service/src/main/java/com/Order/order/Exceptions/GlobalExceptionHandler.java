@@ -12,8 +12,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleProductOutOfStock(ProductOutOfStockException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INSUFFICIENT_STORAGE);
     }
-//    @ExceptionHandler(ProductCreationException.class)
-//    public ResponseEntity<String> handleUserCreationException(ProductCreationException ex) {
-//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
-//    }
+    @ExceptionHandler(OrderNotFound.class)
+    public ResponseEntity<String> handleUserCreationException(OrderNotFound ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
