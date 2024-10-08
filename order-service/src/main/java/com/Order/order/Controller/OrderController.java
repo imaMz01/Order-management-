@@ -35,4 +35,14 @@ public class OrderController {
     public ResponseEntity<OrderDto> orderById(@PathVariable String id){
         return new ResponseEntity<>(orderService.orderById(id),HttpStatus.OK);
     }
+
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id){
+        return new ResponseEntity<>(orderService.delete(id),HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<OrderDto> update(@RequestBody OrderDto orderDto){
+        return new ResponseEntity<>(orderService.update(orderDto),HttpStatus.OK);
+    }
 }

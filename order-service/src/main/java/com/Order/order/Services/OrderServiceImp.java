@@ -5,8 +5,10 @@ import com.Order.order.Dtos.UserDto;
 import com.Order.order.Entities.Order;
 import com.Order.order.Exceptions.OrderNotFound;
 import com.Order.order.Exceptions.ProductOutOfStockException;
+import com.Order.order.Exceptions.ProductQuantityVerification;
 import com.Order.order.FeignClient.ProductFeign;
 import com.Order.order.FeignClient.UserFeign;
+import com.Order.order.Mapper.OrderLineMapper;
 import com.Order.order.Mapper.OrderMapper;
 import com.Order.order.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,14 @@ public class OrderServiceImp implements OrderService{
     @Override
     @Transactional
     public OrderDto add(OrderDto orderDto) {
+        orderDto.getOrdersLine()
+                .forEach(
+                        orderLineDto ->  {
+                            if(orderLineDto.getQuantity()<=0){
+                        throw new ProductQuantityVerification(orderLineDto.getIdProduct());
+                            }
+                 }
+                );
         if( !productFeign.checkQuantity(orderDto.getOrdersLine())){
             throw new ProductOutOfStockException();
         }
@@ -36,6 +46,7 @@ public class OrderServiceImp implements OrderService{
         System.out.println(order.toString());
         order.getOrdersLine().forEach(e-> System.out.println(e.toString()));
         order.setIdUser(orderDto.getUserDto().getId());
+        order.setDeleted(false);
         order.setIdOrder(UUID.randomUUID().toString());
         order.getOrdersLine().forEach(el -> {
             el.setOrder(order);
@@ -49,11 +60,20 @@ public class OrderServiceImp implements OrderService{
 
     @Override
     public OrderDto update(OrderDto orderDto) {
-        return null;
+        Order order = helper(orderDto.getIdOrder());
+        order.setOrdersLine(OrderLineMapper.mapper.OrderLineDtoToOrderLine(
+                orderDto.getOrdersLine())
+        );
+        order.getOrdersLine().forEach(el -> {
+            el.setOrder(order);
+        });
+        return orderMapper.OrderToOrderDto(orderRepository.save(order));
     }
 
     public Order helper(String id){
-        return orderRepository.findById(id).orElseThrow(
+        return orderRepository.findById(id).filter(
+                order -> !order.isDeleted()
+        ).orElseThrow(
                 () -> new OrderNotFound(id)
         );
     }
@@ -71,6 +91,7 @@ public class OrderServiceImp implements OrderService{
     @Override
     public List<OrderDto> all() {
         return orderRepository.findAll().stream()
+                .filter(order -> !order.isDeleted())
                 .map(
                         order -> {
                             return getOrderDto(order.getIdOrder());
@@ -80,6 +101,9 @@ public class OrderServiceImp implements OrderService{
 
     @Override
     public String delete(String id) {
-        return "";
+        Order order = helper(id);
+        order.setDeleted(true);
+        orderRepository.save(order);
+        return "The order was deleted successfully";
     }
 }

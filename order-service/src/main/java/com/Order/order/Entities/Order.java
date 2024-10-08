@@ -19,5 +19,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderLine> ordersLine;
     private String idUser;
+    private boolean deleted;
 
 }

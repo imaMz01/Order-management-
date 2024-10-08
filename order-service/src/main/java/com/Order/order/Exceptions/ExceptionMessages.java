@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 public enum ExceptionMessages {
 
     PRODUCT_OUT_OF_STOCK("One of your products order is out of stock."),
-    ORDER_NOT_FOUND("Order with id %s doesn't exist.");
+    ORDER_NOT_FOUND("Order with id %s doesn't exist."),
+    PRODUCT_QUANTITY_VERIFICATION("quantity of product with ID %s equal to 0");
 
     private final String message;
 

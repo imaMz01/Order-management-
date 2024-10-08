@@ -13,7 +13,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INSUFFICIENT_STORAGE);
     }
     @ExceptionHandler(OrderNotFound.class)
-    public ResponseEntity<String> handleUserCreationException(OrderNotFound ex) {
+    public ResponseEntity<String> handleOrderNotFoundException(OrderNotFound ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(ProductQuantityVerification.class)
+    public ResponseEntity<String> handleProductQuantityVerificationException(ProductQuantityVerification ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
