@@ -20,6 +20,7 @@
         <module>Gateway-service</module>
         <module>product-service</module>
         <module>order-service</module>
+        <module>Notification</module>
     </modules>
 
     <properties>
