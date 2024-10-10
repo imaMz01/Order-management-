@@ -13,6 +13,7 @@ public interface UserService {
     List<UserResponse> users();
     String delete(String id);
     UserResponse getById(String id);
+    public List<UserResponse> allUsers(int nbrePage, int pageSize);
 
 
 }

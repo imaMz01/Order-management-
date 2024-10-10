@@ -18,6 +18,9 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -97,6 +100,13 @@ public class UserServiceImp implements  UserService{
         return UserResponseMapper.mapper.userToUserResponse(
                 userRepository.findAll()
         );
+    }
+
+    public List<UserResponse> allUsers(int nbrePage, int pageSize){
+        Pageable pageable = PageRequest.of(nbrePage,pageSize);
+        List<User> users = userRepository.findAll(pageable).toList();
+        return UserResponseMapper.mapper.userToUserResponse(users);
+
     }
 
     public boolean checkEmail(String email){

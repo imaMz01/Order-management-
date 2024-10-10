@@ -22,9 +22,9 @@ public class OrderController {
     @PostMapping("/add")
     public ResponseEntity<OrderDto> addOrder(@RequestBody OrderDto orderDto){
         ResponseEntity<OrderDto> response = new ResponseEntity<>(orderService.add(orderDto), HttpStatus.CREATED);
-        if(Objects.equals(response.getStatusCode(), HttpStatus.CREATED)){
-            streamBridge.send("notification-topic",String.format("Order with id %s was placed successfully", response.getBody().getIdOrder()));
-        }
+//        if(Objects.equals(response.getStatusCode(), HttpStatus.CREATED)){
+//            streamBridge.send("notification-topic",String.format("Order with id %s was placed successfully", response.getBody().getIdOrder()));
+//        }
         return response;
     }
 

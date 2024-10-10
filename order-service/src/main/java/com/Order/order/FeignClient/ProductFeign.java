@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "product-service")
+@FeignClient(name = "product-service", fallbackFactory = ProductFallBack.class)
 public interface ProductFeign {
 
     @PostMapping

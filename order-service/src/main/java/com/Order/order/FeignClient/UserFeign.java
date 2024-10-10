@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service" ,
+        fallbackFactory = UserFallBack.class)
 public interface UserFeign {
 
     @GetMapping("User/userById/{id}")

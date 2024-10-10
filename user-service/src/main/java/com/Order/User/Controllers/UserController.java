@@ -27,6 +27,11 @@ public class UserController {
         return  new ResponseEntity<>(userService.users(),HttpStatus.OK);
     }
 
+    @GetMapping("/allUsers/{nbrePage}/{pageSize}")
+    public ResponseEntity<List<UserResponse>> allUsers(@PathVariable int nbrePage,@PathVariable int pageSize){
+        return  new ResponseEntity<>(userService.allUsers(nbrePage,pageSize),HttpStatus.OK);
+    }
+
     @GetMapping("/userById/{id}")
     public ResponseEntity<UserResponse> userById(@PathVariable String id){
         return  new ResponseEntity<>(userService.getById(id),HttpStatus.OK);

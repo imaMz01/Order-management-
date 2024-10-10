@@ -20,4 +20,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleProductQuantityVerificationException(ProductQuantityVerification ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(FailedToFindService.class)
+    public ResponseEntity<String> handleFailedToFindServiceException(FailedToFindService ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
