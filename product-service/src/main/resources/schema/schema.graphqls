@@ -1,7 +1,9 @@
 type Mutation {
     addProduct (productDTO : ProductDTO) : Product,
     update (productDTO : ProductDTO, id : String) : Product,
-    delete (id : String) :String
+    delete (id : String) :String,
+    checkQuantity(orderLineDtoList : [OrderLineDto]) : Boolean
+    decreaseStock(orderLineDtoList : [OrderLineDto]) : String
 }
 type Query{
     productById (id : String) : Product,
@@ -18,5 +20,11 @@ input ProductDTO{
     name : String
     category : String
     price : Float
+    quantity : Int
+}
+
+input OrderLineDto{
+    idOrderLine : String
+    idProduct : String
     quantity : Int
 }

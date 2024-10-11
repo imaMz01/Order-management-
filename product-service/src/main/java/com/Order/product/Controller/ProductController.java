@@ -43,6 +43,14 @@ public class ProductController {
         return productService.delete(id);
     }
 
+    @DgsMutation
+    public boolean checkQuantity(@InputArgument List<OrderLineDto> orderLineDtoList){
+        return productService.checkQuantity(orderLineDtoList);
+    }
 
+    @DgsMutation
+    public void decreaseStock(@InputArgument List<OrderLineDto> orderLineDtoList){
+        productService.decreaseStock(orderLineDtoList);
+    }
 
 }

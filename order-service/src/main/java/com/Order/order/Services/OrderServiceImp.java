@@ -1,7 +1,7 @@
 package com.Order.order.Services;
 
 import com.Order.order.Dtos.OrderDto;
-import com.Order.order.Dtos.UserDto;
+import com.Order.order.Dtos.OrderLineDto;
 import com.Order.order.Entities.Order;
 import com.Order.order.Exceptions.OrderNotFound;
 import com.Order.order.Exceptions.ProductOutOfStockException;
@@ -28,6 +28,20 @@ public class OrderServiceImp implements OrderService{
     private final ProductFeign productFeign;
     private final UserFeign userFeign;
 
+
+    public static String buildCheckProductInStockQuery(List<OrderLineDto> orderLineDtos, String function) {
+        String orderLineDtosString = orderLineDtos.stream()
+                .map(orderLine -> String.format(
+                        "{ idOrderLine: \\\"%s\\\", idProduct: \\\"%s\\\", quantity: %d }",
+                        orderLine.getIdOrderLine(),
+                        orderLine.getIdProduct(),
+                        orderLine.getQuantity()))
+                .collect(Collectors.joining(", "));
+
+        return String.format(
+                "{\"query\": \"mutation { "+function+"(orderLineDtoList: [%s]) }\"}",
+                orderLineDtosString);
+    }
     @Override
     @Transactional
     public OrderDto add(OrderDto orderDto) {
@@ -39,7 +53,7 @@ public class OrderServiceImp implements OrderService{
                             }
                  }
                 );
-        if( !productFeign.checkQuantity(orderDto.getOrdersLine())){
+        if( !productFeign.checkQuantity(buildCheckProductInStockQuery(orderDto.getOrdersLine(),"checkQuantity")).getData().isCheckQuantity()){
             throw new ProductOutOfStockException();
         }
         Order order = orderMapper.OrderDtoToOrder(orderDto);
@@ -52,7 +66,7 @@ public class OrderServiceImp implements OrderService{
             el.setOrder(order);
             el.setIdOrderLine(UUID.randomUUID().toString());
         });
-        productFeign.decreaseStock(orderDto.getOrdersLine());
+        productFeign.decreaseStock(buildCheckProductInStockQuery(orderDto.getOrdersLine(),"decreaseStock"));
         return orderMapper.OrderToOrderDto(
                 orderRepository.save(order)
         );
