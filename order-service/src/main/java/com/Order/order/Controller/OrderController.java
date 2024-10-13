@@ -2,10 +2,13 @@ package com.Order.order.Controller;
 
 import com.Order.order.Dtos.OrderDto;
 import com.Order.order.Services.OrderService;
+import com.Order.order.Validation.AddGroup;
+import com.Order.order.Validation.UpdateGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +23,7 @@ public class OrderController {
     private final StreamBridge streamBridge;
 
     @PostMapping("/add")
-    public ResponseEntity<OrderDto> addOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<OrderDto> addOrder(@Validated(AddGroup.class) @RequestBody OrderDto orderDto){
         ResponseEntity<OrderDto> response = new ResponseEntity<>(orderService.add(orderDto), HttpStatus.CREATED);
         if(Objects.equals(response.getStatusCode(), HttpStatus.CREATED)){
             streamBridge.send("notification-topic",String.format("Order with id %s was placed successfully", response.getBody().getIdOrder()));
@@ -44,7 +47,7 @@ public class OrderController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<OrderDto> update(@RequestBody OrderDto orderDto){
+    public ResponseEntity<OrderDto> update(@Validated(UpdateGroup.class) @RequestBody OrderDto orderDto){
         return new ResponseEntity<>(orderService.update(orderDto),HttpStatus.OK);
     }
 }
